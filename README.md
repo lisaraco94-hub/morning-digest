@@ -18,13 +18,13 @@ You describe your role, competitors, and markets in a plain-text config file. Ev
    - arXiv (ML/AI papers applied to diagnostics and imaging)
 3. **Agentic follow-up loop** — Claude identifies coverage gaps and runs targeted searches (up to 4 rounds)
 4. **Scores & writes** — Claude Sonnet reads every article and assigns a relevance score (1–3) based on your profile:
-   - **Score 3 / PRIORITÀ ALTA**: market-moving events (M&A, FDA/CE approvals, competitor launches, regulatory changes). Max 3–5 per day — if nothing qualifies, score 3 = 0.
+   - **Score 3 / HIGH PRIORITY**: market-moving events (M&A, FDA/CE approvals, competitor launches, regulatory changes). Max 3–5 per day — if nothing qualifies, score 3 = 0.
    - **Score 2**: relevant sector news
    - Score 1 articles are discarded before the report is written
 5. **Generates an HTML newspaper** with:
    - Featured cards for high-priority articles
    - Clickable TL;DR bullets at the top
-   - "Why it matters to you" for every article
+   - "Why it matters" for every article
    - Obsidian import button (select articles → one click → saves to your vault)
 
 ---
@@ -57,7 +57,7 @@ On Windows (PowerShell):
 cp config.example.yaml config.yaml
 ```
 
-Then edit `config.yaml` — the most important field is `chi_sono`: describe your role, the products you work with, your competitors, and the markets you monitor. Claude uses this verbatim to score every article.
+Then edit `config.yaml` — the most important field is `profile`: describe your role, the products you work with, your competitors, and the markets you monitor. Claude uses this verbatim to score every article.
 
 See `config.example.yaml` for detailed comments on every option.
 
@@ -77,17 +77,19 @@ The HTML opens from the path set in `output.html_path` (default: `~/Desktop/dige
 |-------|-------------|
 | `user_name` | Your name — shown in the HTML header |
 | `organization` | Your company — shown in the header/footer |
-| `chi_sono` | Your professional profile — **the most important field** |
+| `profile` | Your professional profile — **the most important field** |
 | `branding` | Optional color overrides (primary, dark, accent, success colors) |
-| `news_queries` | Google News queries with `sezione` (section) assignment |
-| `rss_feeds` | Specialized RSS feeds |
+| `news_queries` | Google News queries with `section` assignment |
+| `rss_feeds` | Specialized RSS feeds (each with a `section`) |
 | `arxiv.categories` | arXiv categories to monitor |
+| `arxiv.lookback_days` | How many days back to fetch arXiv papers |
 | `pubmed.queries` | PubMed keyword queries |
+| `pubmed.lookback_days` | How many days back to fetch PubMed results |
 | `output.html_path` | Where to write the daily HTML file |
 | `output.obsidian_vault` | Path to your Obsidian vault root (leave empty to disable) |
 | `output.obsidian_import_folder` | Vault subfolder for imported articles |
 | `output.obsidian_context_notes` | Vault notes to read for richer query generation |
-| `modello` | Claude model for scoring (default: `claude-sonnet-4-6`) |
+| `model` | Claude model for scoring (default: `claude-sonnet-4-6`) |
 
 ---
 
@@ -150,7 +152,7 @@ config.yaml + Obsidian notes (optional)
    └── arXiv API
         │
         ▼
-   Mini agentic loop (max 4 iters)
+   Agentic follow-up loop (max 4 iterations)
    ├── [Haiku] agentic_followup()  ← identifies gaps, runs targeted searches
    └── stops early if no new articles found
         │
@@ -158,18 +160,36 @@ config.yaml + Obsidian notes (optional)
    [Sonnet] score_and_write()      ← scores articles + writes full MD report
         │
         ▼
-   generate_html_newspaper()       ← renders HTML with embedded scores
+   generate_html()                 ← renders HTML with embedded scores
 ```
 
 **Typical cost**: $0.05–0.15 USD per run (varies with article count and length).
 
 ---
 
+## Project structure
+
+```
+morning-digest/
+├── digest/
+│   ├── agents.py       # AI agents: plan, follow-up, score & write
+│   ├── config.py       # Config loading
+│   ├── pipeline.py     # Main orchestration
+│   ├── renderer.py     # HTML generation
+│   ├── research.py     # Web/RSS/arXiv/PubMed fetching
+│   └── trackers.py     # CostTracker, CoverageTracker
+├── digest.py           # Entry point
+├── config.example.yaml
+└── requirements.txt
+```
+
+---
+
 ## Customizing for your sector
 
-The default sections (`IVD & Lab Automation`, `Mercati LATAM & APAC`, `Biotech & Digital Health`, `Letteratura Scientifica`) can be changed by editing `SECTION_STYLE` in `digest.py` and updating the `sezione` values in `config.yaml`.
+The default sections (`IVD & Lab Automation`, `Markets LATAM & APAC`, `Biotech & Digital Health`, `Scientific Literature`) can be changed by editing `_section_colors()` in `digest/renderer.py` and updating the `section` values in `config.yaml`.
 
-The scoring criteria in `score_and_write()` are written in English inside the prompt — edit them to match what "market-moving" means in your industry.
+The scoring criteria in `score_and_write()` in `digest/agents.py` are written in plain English inside the prompt — edit them to match what "market-moving" means in your industry.
 
 ---
 
