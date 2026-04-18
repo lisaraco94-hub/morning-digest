@@ -1,0 +1,27 @@
+# Secrets
+.env
+*.key
+
+# Personal config (copy config.example.yaml → config.yaml and fill in)
+config.yaml
+
+# Generated output
+archive/
+digest_today.html
+*.html
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
