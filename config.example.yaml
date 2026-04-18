@@ -1,12 +1,12 @@
 # ── WHO YOU ARE — describe yourself in natural language ──────────────────────
-# This is the most important section. Be specific: your role, what you sell/build,
-# who your competitors are, which markets you watch. Claude uses this to filter
-# and score every article for relevance to you.
+# This is the most important field. Be specific: your role, what you sell/build,
+# who your competitors are, which markets you watch. Claude uses this verbatim
+# to score every article for relevance to you.
 
 user_name: "Alex"
 organization: "LabTech Inc."   # shown in the HTML header and footer
 
-chi_sono: |
+profile: |
   I am Alex Chen, Business Development Manager at LabTech Inc., a mid-size
   distributor of clinical laboratory automation solutions across Southeast Asia.
 
@@ -34,82 +34,83 @@ chi_sono: |
 #   success_color:  "#1A7A4A"   # green for "high priority" badge
 
 # ── GOOGLE NEWS RSS — seed queries (always included as fallback) ──────────────
-# Haiku generates additional optimized queries; these guarantee minimum coverage.
+# Haiku generates additional optimized queries at runtime; these guarantee
+# minimum coverage if the AI-generated ones are discarded by validation.
 # Style: journalistic, max 6 words, company name + 1-2 topic words.
 news_queries:
 
-  # ── IVD & Lab Automation — general topics ────────────────────────────────────
+  # ── IVD & Lab Automation ─────────────────────────────────────────────────────
   - q: "laboratory automation hospital efficiency"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "clinical laboratory diagnostics new product 2026"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "in vitro diagnostics market 2026"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "medtech diagnostics deal acquisition"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "laboratory information system LIS software"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "IVDR EU in vitro diagnostic regulation"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "pre-analytical errors laboratory patient safety"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "point-of-care testing POCT hospital"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
 
   # ── Competitors ───────────────────────────────────────────────────────────────
   - q: "Siemens Healthineers"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Roche Diagnostics"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Abbott diagnostics laboratory"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Beckman Coulter diagnostics"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Sysmex hematology diagnostics"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "bioMerieux microbiology diagnostics"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Mindray medical diagnostics"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - q: "Horiba Medical laboratory"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
 
-  # ── Target markets ─────────────────────────────────────────────────────────
+  # ── Target markets ────────────────────────────────────────────────────────────
   - q: "Southeast Asia healthcare diagnostics"
-    sezione: "Mercati LATAM & APAC"
+    section: "Markets LATAM & APAC"
   - q: "Singapore hospital laboratory automation"
-    sezione: "Mercati LATAM & APAC"
+    section: "Markets LATAM & APAC"
   - q: "India diagnostics laboratory market"
-    sezione: "Mercati LATAM & APAC"
+    section: "Markets LATAM & APAC"
   - q: "China hospital laboratory automation"
-    sezione: "Mercati LATAM & APAC"
+    section: "Markets LATAM & APAC"
   - q: "Japan South Korea laboratory diagnostics"
-    sezione: "Mercati LATAM & APAC"
+    section: "Markets LATAM & APAC"
 
-  # ── Biotech & Digital Health ──────────────────────────────────────────────
+  # ── Biotech & Digital Health ──────────────────────────────────────────────────
   - q: "AI diagnostics clinical laboratory innovation"
-    sezione: "Biotech & Digital Health"
+    section: "Biotech & Digital Health"
   - q: "digital pathology whole slide imaging"
-    sezione: "Biotech & Digital Health"
+    section: "Biotech & Digital Health"
   - q: "liquid biopsy cfDNA clinical laboratory"
-    sezione: "Biotech & Digital Health"
+    section: "Biotech & Digital Health"
   - q: "biotech diagnostics funding acquisition 2026"
-    sezione: "Biotech & Digital Health"
+    section: "Biotech & Digital Health"
 
 # ── SPECIALIZED RSS FEEDS ─────────────────────────────────────────────────────
 rss_feeds:
   - url: "https://www.darkdaily.com/feed"
-    sezione: "IVD & Lab Automation"
+    section: "IVD & Lab Automation"
   - url: "https://www.fiercebiotech.com/rss/xml"
-    sezione: "Biotech & Digital Health"
+    section: "Biotech & Digital Health"
 
 # ── SCIENTIFIC LITERATURE ──────────────────────────────────────────────────────
 arxiv:
   categories:
     - "q-bio.QM"   # quantitative methods in biology
-    - "cs.LG"      # machine learning (filter applied downstream)
+    - "cs.LG"      # machine learning (filter applied downstream by Sonnet)
     - "eess.IV"    # image/video processing (diagnostic imaging)
-  giorni_indietro: 7
+  lookback_days: 7
   max_papers: 15
 
 pubmed:
@@ -120,7 +121,7 @@ pubmed:
     - "pre-analytical errors hemolysis icterus lipemia"
     - "point-of-care testing POCT clinical outcome"
     - "digital pathology whole slide imaging laboratory"
-  giorni_indietro: 7
+  lookback_days: 7
   max_results: 15
 
 # ── OUTPUT ─────────────────────────────────────────────────────────────────────
@@ -149,5 +150,6 @@ vault_context_keywords:
   - "laboratory"
 
 # ── MODEL ──────────────────────────────────────────────────────────────────────
-# Scoring/writing model. Haiku is always used for planning (cheaper).
-modello: "claude-sonnet-4-6"
+# Model used for scoring and report writing. Haiku is always used for planning
+# (cheaper). Sonnet is the recommended default for the scoring/writing phase.
+model: "claude-sonnet-4-6"
